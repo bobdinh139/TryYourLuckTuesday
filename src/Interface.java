@@ -39,7 +39,7 @@ public class Interface extends Component  implements ActionListener{
 	JLabel credit = new JLabel("Powered by librandom.org-client (written also by @frychicken)");
 	JCheckBox darkmode = new JCheckBox("night-mode");
 	JCheckBox lightmode = new JCheckBox("light-mode");
-	JLabel betaalert = new JLabel("Currently in Beta");
+	JLabel betaalert = new JLabel("");
 	JButton idontunderstand = new JButton("I don't understand");
 	JButton nativedepiction = new JButton("Native Depiction");
 	JButton javadepiction = new JButton("Java Depiction");
@@ -224,10 +224,14 @@ public class Interface extends Component  implements ActionListener{
 				maximum = Integer.valueOf(max.getText());
 				total = Integer.valueOf(totalnumber.getText());
 				baseofnum = Integer.valueOf(base.getText());
+				if ( (baseofnum != 10) && (baseofnum != 2) && (baseofnum !=16) && (baseofnum !=8)) {
+					CheckUpdate.popUp("Base should be 2 or 8 or 10 or 16", "Warning");
+					return;
+				}
 				generateRand(total, minimum, maximum, baseofnum);
 			} catch (Exception exceptionx) {
 				exceptionx.printStackTrace();
-				CheckUpdate.popUp("Please type in integers", "Warning");
+				CheckUpdate.popUp("Please use integers", "Warning");
 			}
 		}
 		if (s.equals("Native Depiction")) {
@@ -314,10 +318,10 @@ public class Interface extends Component  implements ActionListener{
 				for (int i=0; i< albel.length; i++) {
 					albel[i].setForeground(Color.GREEN);
 					panel.add(albel[i]);
-					for (int j =0; j< Integer.valueOf(gtr.getArrayList().get(i)); j++) {
+					for (int j =0; j<= Integer.valueOf(gtr.getArrayList().get(i)); j++) {
 						try {
 							Thread.sleep(30);
-							albel[i].setText(Integer.toString(j+1));
+							albel[i].setText(Integer.toString(j));
 							Thread.sleep(30);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
@@ -341,7 +345,8 @@ public class Interface extends Component  implements ActionListener{
 			if ( i != gtr.getArrayList().size() -1)
 				display += gtr.getArrayList().get(i) + ", ";
 			else
-				display += gtr.getArrayList().get(i);       }
+				display += gtr.getArrayList().get(i);       
+			}
 		CheckUpdate.popUp(display, "Done!");
 		defaultButton();
 	}
@@ -380,11 +385,12 @@ public class Interface extends Component  implements ActionListener{
 			public void run() {
 				String rannum = "";
 				if (chooseal.isSelected()) {
-					if (total > 5) {
+					if (total > 5 || baseofnum !=10) {
 						showing();
 					} else {
 						rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
 						printingNumber(rannum);
+						System.out.println(rannum);
 						int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
 						double percentage = (winwhat*100/maximum);
 						if (percentage >= 90) {
@@ -427,4 +433,5 @@ public class Interface extends Component  implements ActionListener{
 		}).start();
 	}
 }
+
 

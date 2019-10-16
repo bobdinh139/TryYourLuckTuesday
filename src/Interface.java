@@ -71,9 +71,13 @@ public class Interface extends Component  implements ActionListener{
 		stringg[1] = new JCheckBox("uppercase");
 		stringg[2] = new JCheckBox("lowercase");
 		stringg[3] = new JCheckBox("digit");
+		try {
+			ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
+			show = new JLabel(icon);
 
-		ImageIcon icon = new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
-		show = new JLabel(icon);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		totalnumber = new JTextField("5");
 		min = new JTextField("1");
 		max = new JTextField("20");
@@ -277,7 +281,7 @@ public class Interface extends Component  implements ActionListener{
 			if (choosea2.isSelected()) {
 				allalbel[0].setVisible(false);
 				allalbel[3].setVisible(false);
-				
+
 				totalnumber.setVisible(false);
 				base.setVisible(false);
 
@@ -303,6 +307,21 @@ public class Interface extends Component  implements ActionListener{
 			frame.dispose();
 		}
 	}
+
+	private boolean checkDuplicates() {
+		int c =1;
+		for(int i=0; i < gtr.getArrayList().size(); i++ ){
+			String a =  gtr.getArrayList().get(i);
+			for(int j=c; j < gtr.getArrayList().size(); j++ ) {
+				if (a.equals(gtr.getArrayList().get(j))) {
+					return true;
+				}
+			}
+			c++;
+		}
+		return false;
+	}
+
 	private void printingNumber(String rannum) {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
@@ -346,7 +365,7 @@ public class Interface extends Component  implements ActionListener{
 				display += gtr.getArrayList().get(i) + ", ";
 			else
 				display += gtr.getArrayList().get(i);       
-			}
+		}
 		CheckUpdate.popUp(display, "Done!");
 		defaultButton();
 	}
@@ -389,7 +408,11 @@ public class Interface extends Component  implements ActionListener{
 						showing();
 					} else {
 						rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
-						printingNumber(rannum);
+						if(!checkDuplicates())
+							printingNumber(rannum);
+						else {
+							CheckUpdate.popUp("Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!", "Duplicates found");
+						}
 						System.out.println(rannum);
 						int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
 						double percentage = (winwhat*100/maximum);
@@ -433,5 +456,3 @@ public class Interface extends Component  implements ActionListener{
 		}).start();
 	}
 }
-
-

@@ -139,7 +139,7 @@ public class CheckUpdate extends JPanel {
 	}
 	
 	private void updatedapro() {
-       popUp("Updater and hash-checker are not developed yet because there is no official version\nPlease find your invitation link to download the newest version!", "Couldn't automatically get update");
+       popUp("Updater and hash-checker are not yet developed because I am too lazy\nPlease update it manually", "Couldn't automatically get update");
 
 	}
 }

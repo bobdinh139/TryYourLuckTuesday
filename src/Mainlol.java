@@ -2,7 +2,7 @@
 
 public class Mainlol {
   public static void main(String args[]) {
-	  Interface UI = new Interface();
+	  Interface UI = new Interface(false);
 	  CheckUpdate ccu= new CheckUpdate();
 		try {
 			ccu.checkup();
@@ -10,7 +10,7 @@ public class Mainlol {
 			e.printStackTrace();
 
 		}
-	  UI.execute(false);
+	  UI.execute();
 	  
   }
 	

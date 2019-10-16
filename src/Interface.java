@@ -17,7 +17,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import xyz.null0verflow.librandomorgclient.GenerateTrueRandom;
-public class Interface extends Component  implements ActionListener{
+public class Interface extends Component implements ActionListener{
 	private boolean stopc = true;
 	private int minimum;
 	private int maximum;
@@ -215,7 +215,7 @@ public class Interface extends Component  implements ActionListener{
 			for ( int i=0; i < allalbel.length; allalbel[i++].setForeground(Color.BLACK));
 		}
 	}
-	public void changecolor() {
+	private void changecolor() {
 		button.setForeground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 		button.setBackground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 	}
@@ -322,6 +322,20 @@ public class Interface extends Component  implements ActionListener{
 		return false;
 	}
 
+	private void winWhat() {
+		int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
+		double percentage = (winwhat*100/maximum);
+		if (percentage >= 90) {
+			whatIwin.setText("you earn: + 1 extra credit!");
+		} else if (percentage < 90 && percentage >= 80) {
+			whatIwin.setText("You earn: 3D-printed model!");
+		}else if (percentage < 80 && percentage >= 40){
+			whatIwin.setText("You earn: goodies bag!");
+		} else if (percentage < 40 && percentage >= 0){
+			whatIwin.setText("You earn: a sticker!");
+		}
+	}
+
 	private void printingNumber(String rannum) {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
@@ -414,17 +428,7 @@ public class Interface extends Component  implements ActionListener{
 							CheckUpdate.popUp("Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!", "Duplicates found");
 						}
 						System.out.println(rannum);
-						int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
-						double percentage = (winwhat*100/maximum);
-						if (percentage >= 90) {
-							whatIwin.setText("you earn: + 1 extra credit!");
-						} else if (percentage < 90 && percentage >= 80) {
-							whatIwin.setText("You earn: 3D-printed model!");
-						}else if (percentage < 80 && percentage >= 40){
-							whatIwin.setText("You earn: goodies bag!");
-						} else if (percentage < 40 && percentage >= 0){
-							whatIwin.setText("You earn: a sticker!");
-						}
+						winWhat();
 					}
 				}
 				else if (choosea2.isSelected()) {

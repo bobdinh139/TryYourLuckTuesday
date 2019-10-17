@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JLabel;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
+	private boolean click = false;
 	public Interface(boolean isdark) {
 		super(isdark);
 	}
@@ -30,6 +31,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
 		if (s.equals("Generate TRUE random number")) {
+			click = !click;
 			try {
 				minimum = Integer.valueOf(min.getText());
 				maximum = Integer.valueOf(max.getText());
@@ -46,10 +48,16 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			}
 		}
 		if (s.equals("Native Depiction")) {
-			toggleNativeDepic();
+			if(!click)
+				toggleNativeDepic();
+			else 
+				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 		if (s.equals("Java Depiction")) {
-			toggleJavaDepic();
+			if(!click)
+				toggleJavaDepic();
+			else 
+				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 		if (s.equals("I don't understand")) {
 			new Help().showHelp();
@@ -66,10 +74,16 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			}
 		}
 		if(darkmode.isSelected()) {
-			togglenight();
+			if(!click)
+				togglenight();
+			else 
+				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 		if(lightmode.isSelected()) {
-			togglelight();
+			if(!click)
+				togglelight();
+			else 
+				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 	}
 
@@ -157,6 +171,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		click = !click;
 	}
 	private void generateRand(int total, int minimum, int maximum, int baseofnum) {
 		stopc = true;
@@ -175,12 +190,6 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}).start();
 		new Thread(new Runnable() {
 			public void run() {
-				String quota = gtr.QuotaCheck();
-				betaalert.setText("status code: " + Integer.toString(gtr.getStatusCode()) + "; Quota: " + quota); 
-			}
-		}).start();
-		new Thread(new Runnable() {
-			public void run() {
 				String rannum = "";
 				if (chooseal.isSelected()) {
 					if (total > 5 || baseofnum !=10) {
@@ -190,7 +199,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						if(!checkDuplicates())
 							printingNumber(rannum);
 						else {
-							CheckUpdate.popUp("Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!", "Duplicates found");
+							CheckUpdate.popUp("Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
 						}
 						System.out.println(rannum);
 						winWhat();
@@ -221,6 +230,19 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				button.setForeground(Color.ORANGE);
 				waitF();
 				defaultButton();
+			}
+		}).start();
+		new Thread(new Runnable() {
+			public void run() {
+				while(stopc) {
+					String quota = gtr.QuotaCheck();
+					String sCode = Integer.toString(gtr.getStatusCode());
+					betaalert.setText("status code: " + sCode + "; Quota: "+quota); 
+				}
+				if (gtr.getStatusCode()==503) {
+					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");
+				}
+
 			}
 		}).start();
 	}

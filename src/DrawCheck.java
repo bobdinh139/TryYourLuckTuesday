@@ -64,6 +64,6 @@ public class DrawCheck extends JPanel {
 		f.drawString(display, 20,120);
 	}
 	public int getVersion() {
-		return 8; 
+		return 9; 
 	}
 }

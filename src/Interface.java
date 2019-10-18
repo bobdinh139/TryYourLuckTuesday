@@ -235,7 +235,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				while(stopc) {
 					String quota = gtr.QuotaCheck();
 					String sCode = Integer.toString(gtr.getStatusCode());
-					betaalert.setText("status code: " + sCode + "; Quota: "+quota); 
+					betaalert.setText("<html>status code: " + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "</html>"); 
 				}
 				if (gtr.getStatusCode()==503) {
 					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");

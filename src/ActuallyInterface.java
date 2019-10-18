@@ -108,7 +108,7 @@ public class ActuallyInterface extends Component{
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
-		betaalert.setBounds(540, 220, 400, 25);
+		betaalert.setBounds(540, 220, 400, 50);
 		betaalert.setForeground(Color.BLUE);
 		totalnumber.setBounds(250, 150, 200, 25);
 		min.setBounds(250, 180, 200, 25);

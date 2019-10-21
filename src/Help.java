@@ -44,7 +44,7 @@ public class Help extends JPanel {
 
 				browser = new WebView();
 				webEngine = browser.getEngine();
-				webEngine.load("https://www.random.org/clients/http/");
+				webEngine.load("https://www.random.org/randomness/");
 
 				ObservableList<Node> children = root.getChildren();
 				Worker<Void> worker = webEngine.getLoadWorker();
@@ -64,7 +64,7 @@ public class Help extends JPanel {
 		SwingUtilities.invokeLater(new Runnable() {  
 			@Override
 			public void run() {  
-				frame = new JFrame("Help");  
+				frame = new JFrame("Read this");  
 				frame.getContentPane().add(new Help());  
 				frame.setMinimumSize(new Dimension(800, 600));  
 				frame.setLocationRelativeTo(null);

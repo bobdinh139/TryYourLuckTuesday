@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private boolean click = false;
@@ -57,7 +58,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			else 
 				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
-		if (s.equals("I don't understand")) {
+		if (s.equals("I have doubts")) {
 			new Help().showHelp();
 		}
 		if (choosea3.isSelected()) {
@@ -197,7 +198,23 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						if(!checkDuplicates())
 							printingNumber(rannum);
 						else {
-							CheckUpdate.popUp("Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
+							String[] options = new String[2];
+							options[1] = new String("Force-Override");
+							options[0] = new String("Close");
+							int result = JOptionPane.showOptionDialog(
+									frame,
+									"Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", 
+									"Duplicates detected",            
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.QUESTION_MESSAGE,
+									null,     
+									options,  
+									options[0] 
+									);
+
+							if(result == JOptionPane.NO_OPTION){
+								printingNumber(rannum);
+							}
 						}
 						System.out.println(rannum);
 						winWhat();

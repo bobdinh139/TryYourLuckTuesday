@@ -41,7 +41,7 @@ public class ActuallyInterface extends Component{
 	JCheckBox darkmode = new JCheckBox("night-mode");
 	JCheckBox lightmode = new JCheckBox("light-mode");
 	JLabel betaalert = new JLabel("");
-	JButton idontunderstand = new JButton("I don't understand");
+	JButton idontunderstand = new JButton("I have doubts");
 	JButton nativedepiction = new JButton("Native Depiction");
 	JButton javadepiction = new JButton("Java Depiction");
 	JLabel whatIwin = new JLabel("What you earn will appear here");

@@ -35,9 +35,9 @@ public class ActuallyInterface extends Component{
 	JLabel albel[];
 	JLabel allalbel[] = new JLabel[4];
 	GenerateTrueRandom gtr = new GenerateTrueRandom("bobdinh139@icloud.com");
-	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise");
-	JLabel credit1 = new JLabel("by @frychicken (Bob Dinh) with special thanks to random.org API ");
-	JLabel credit = new JLabel("Powered by librandom.org-client (written also by @frychicken)");
+	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise and radioactive decay");
+	JLabel credit1 = new JLabel("by @frychicken (Bob Dinh) with special thanks to random.org and fourmilab.ch API ");
+	JLabel credit = new JLabel("Powered by librandom.org-client, libfourmilab-client (written also by @frychicken) and json-simple-1.1");
 	JCheckBox darkmode = new JCheckBox("night-mode");
 	JCheckBox lightmode = new JCheckBox("light-mode");
 	JLabel betaalert = new JLabel("");
@@ -46,6 +46,11 @@ public class ActuallyInterface extends Component{
 	JButton javadepiction = new JButton("Java Depiction");
 	JLabel whatIwin = new JLabel("What you earn will appear here");
 
+	ButtonGroup bg2;
+
+	JRadioButton atmosphericNoise = new JRadioButton("Atmospheric Noise");
+	JRadioButton radioactivedecay = new JRadioButton("Radioactive Decay");
+	
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
 	JRadioButton choosea3 = new JRadioButton("Random string");
@@ -65,8 +70,9 @@ public class ActuallyInterface extends Component{
 			e.printStackTrace();
 		}
 		bg = new ButtonGroup();
+		bg2 = new ButtonGroup();
 		panel = new JPanel();
-		allalbel[0] = new JLabel("Total number");
+		allalbel[0] = new JLabel("Total Number");
 		allalbel[1] = new JLabel("Min");
 		allalbel[2] = new JLabel("Max");
 		allalbel[3] = new JLabel("Base");
@@ -102,9 +108,9 @@ public class ActuallyInterface extends Component{
 		javadepiction.setBackground(Color.PINK);
 		show.setBounds(10, 100, 1000, 1000);
 		idontunderstand.setBounds(300, 100, 200,30);
-		credit0.setBounds(160, 20, 500, 35);
-		credit1.setBounds(200, 50, 450, 25);
-		credit.setBounds(220, 70, 400, 25);
+		credit0.setBounds(60, 20, 700, 35);
+		credit1.setBounds(150, 50, 550, 25);
+		credit.setBounds(70, 70, 700, 25);
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
@@ -116,12 +122,19 @@ public class ActuallyInterface extends Component{
 		base.setBounds(250, 240, 200, 25);
 		whatIwin.setBounds(20, 530, 200, 50);
 		whatIwin.setForeground(Color.RED);
-		chooseal.setBounds(50, 150, 150, 25);
-		choosea2.setBounds(50, 180, 150, 25);
-		choosea3.setBounds(50, 210, 150, 25);
+		chooseal.setBounds(50, 180, 150, 25);
+		choosea2.setBounds(50, 210, 150, 25);
+		choosea3.setBounds(50, 240, 150, 25);
 		bg.add(chooseal);
 		bg.add(choosea2);
 		bg.add(choosea3);
+		
+		atmosphericNoise.setBounds(10, 130, 250, 25);
+		radioactivedecay.setBounds(10, 150, 150, 25);
+		bg2.add(atmosphericNoise);
+		bg2.add(radioactivedecay);
+		atmosphericNoise.setSelected(true);
+		
 		button.setBounds(200, 600, 400, 100);
 		chooseal.setSelected(true);
 		frame.setResizable(false);
@@ -129,6 +142,8 @@ public class ActuallyInterface extends Component{
 		frame.setFocusable(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		panel.add(atmosphericNoise);
+		panel.add(radioactivedecay);
 		panel.add(chooseal);
 		panel.add(choosea2);
 		panel.add(choosea3);
@@ -207,6 +222,38 @@ public class ActuallyInterface extends Component{
 			base.setCaretColor(Color.BLACK);
 			for ( int i=0; i < allalbel.length; allalbel[i++].setForeground(Color.BLACK));
 		}
+	}
+	
+	protected void atmosphericSelect() {
+		chooseal.setVisible(true);
+		choosea2.setVisible(true);
+		choosea3.setVisible(true);
+		allalbel[2].setVisible(true);
+		allalbel[3].setVisible(true);
+		max.setVisible(true);
+		base.setVisible(true);
+		allalbel[1].setText("Min");
+		min.setText("1");
+
+	}
+	
+	protected void radioactiveSelect() {
+		CheckUpdate.popUp("Currently on beta stage\nIt only generates raw numbers", "Warning");
+		chooseal.setVisible(false);
+		choosea2.setVisible(false);
+		choosea3.setVisible(false);
+		allalbel[2].setVisible(false);
+		allalbel[3].setVisible(false);
+		max.setVisible(false);
+		base.setVisible(false);
+		for (int i=0; i< stringg.length; stringg[i++].setVisible(false));
+		totalnumber.setVisible(true);
+		min.setVisible(true);
+		min.setText("AAAABBBBCCCC");
+		allalbel[1].setText("API key");
+		allalbel[0].setText("Total Number");
+		allalbel[1].setVisible(true);
+		allalbel[0].setVisible(true);
 	}
 	
 	protected void toggleNativeDepic() {

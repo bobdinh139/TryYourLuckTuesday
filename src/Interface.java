@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
@@ -100,8 +101,92 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 	}
 	
-	private void convertNumber() {
+	private void convertNumber(JSONArray arr) {
+		int number[] = new int[arr.size()];
+		for (int i=0; i < arr.size(); i++) {
+			number[i] = Integer.valueOf(String.valueOf(arr.get(i)));
+		}
+		for (int i=0; i < number.length;i++) {
+			if (number[i] > 20 && number[i] <= 200) {
+				number[i] = (int) Math.round( (double)number[i]/ (double)10);
+			} else if(number[i] > 200) {
+				number[i] = number[i] % (int) Math.pow(10, (int) Math.log10(number[i]));
+				number[i] = (int) Math.round( (double)number[i]/ (double)10);
+			} 
+		}
 		
+		if (!checkDuplicates(number)) {
+			printingNumber(number);
+		} else {
+			String[] options = new String[2];
+			options[1] = new String("Force-Override");
+			options[0] = new String("Close");
+			int result = foundDups(options, "Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
+			if(result == JOptionPane.NO_OPTION){
+				printingNumber(number);
+			}
+		}
+		winWhat(number);
+
+	}
+	private void winWhat(int arr[]) {
+		int winwhat = arr[0];
+		double percentage = (winwhat*100/maximum);
+		if (percentage >= 90) {
+			whatIwin.setText("you earn: + 1 extra credit!");
+		} else if (percentage < 90 && percentage >= 80) {
+			whatIwin.setText("You earn: 3D-printed model!");
+		}else if (percentage < 80 && percentage >= 40){
+			whatIwin.setText("You earn: goodies bag!");
+		} else if (percentage < 40 && percentage >= 0){
+			whatIwin.setText("You earn: a sticker!");
+		}
+	}
+	
+	private void printingNumber(int arr[]) {
+		if (cc>0)
+			for (int i=0; i< albel.length; panel.remove(albel[i++]));
+		cc++;
+		albel = new JLabel[arr.length];
+		for (int i=0; i< albel.length; albel[i++] = new JLabel());
+		for (int i=0; i< albel.length; albel[i++].setFont(new Font("Serif", Font.BOLD, 60)));
+		for(int i=0; i < arr.length; i++ ){
+			albel[i].setText(String.valueOf(arr[i]));
+		}
+		new Thread(new Runnable() {
+			public void run() {
+				for (int i=0; i< albel.length; i++) {
+					albel[i].setForeground(Color.GREEN);
+					panel.add(albel[i]);
+					for (int j =0; j<= Integer.valueOf(arr[i]); j++) {
+						try {
+							Thread.sleep(30);
+							albel[i].setText(Integer.toString(j));
+							Thread.sleep(30);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}).start();
+		int f = -50;
+		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
+	}
+	
+	
+	private boolean checkDuplicates(int arr[]) {
+		int c =1;
+		for(int i=0; i < arr.length; i++ ){
+			int a =  arr[i];
+			for(int j=c; j < arr.length; j++ ) {
+				if (a == arr[j]) {
+					return true;
+				}
+			}
+			c++;
+		}
+		return false;
 	}
 
 	private boolean checkDuplicates() {
@@ -196,14 +281,20 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				while(stopc) {
 					String quota  = "";
 					String sCode ="";
+					JSONArray rawnum = null ;
 					if (!isDecay) {
 						quota = gtr.QuotaCheck();
 						sCode = "status code: " + Integer.toString(gtr.getStatusCode());
 					}else {
 						quota = RadioActiveDecay.parseURl(data, "quotaRequestsRemaining");
 						sCode = "Quota bytes: "+RadioActiveDecay.parseURl(data, "quotaBytesRemaining");
+						try {
+							rawnum = RadioActiveDecay.getRandom(data);
+						} catch (ParseException e) {
+							e.printStackTrace();
+						}
 					}
-					betaalert.setText("<html>" + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "</html>"); 
+					betaalert.setText("<html>" + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "<br/>"+rawnum+"</html>"); 
 				}
 				if (gtr.getStatusCode()==503) {
 					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");
@@ -236,12 +327,14 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						data = RadioActiveDecay.getDataFromServer(Integer.toString(total), min.getText());
 					} catch (IOException e) {
 						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error!");
 					}
 					displayOutput(true, data);
 					try {
-						CheckUpdate.popUp(RadioActiveDecay.getRandom(data).toString(), "Done!");
+						convertNumber(RadioActiveDecay.getRandom(data));
 					} catch (ParseException e) {
 						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error!");
 					}
 				}
 				else if (atmosphericNoise.isSelected()) {
@@ -257,17 +350,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 								String[] options = new String[2];
 								options[1] = new String("Force-Override");
 								options[0] = new String("Close");
-								int result = JOptionPane.showOptionDialog(
-										frame,
-										"Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", 
-										"Duplicates detected",            
-										JOptionPane.YES_NO_OPTION,
-										JOptionPane.QUESTION_MESSAGE,
-										null,     
-										options,  
-										options[0] 
-										);
-
+								int result = foundDups(options, "Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
+								
 								if(result == JOptionPane.NO_OPTION){
 									printingNumber(rannum);
 								}

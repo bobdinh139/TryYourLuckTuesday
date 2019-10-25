@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -129,7 +130,7 @@ public class ActuallyInterface extends Component{
 		bg.add(choosea2);
 		bg.add(choosea3);
 		
-		atmosphericNoise.setBounds(10, 130, 250, 25);
+		atmosphericNoise.setBounds(10, 130, 200, 25);
 		radioactivedecay.setBounds(10, 150, 150, 25);
 		bg2.add(atmosphericNoise);
 		bg2.add(radioactivedecay);
@@ -180,6 +181,10 @@ public class ActuallyInterface extends Component{
 			choosea2.setForeground(Color.WHITE);
 			choosea3.setBackground(Color.DARK_GRAY);
 			choosea3.setForeground(Color.WHITE);
+			atmosphericNoise.setBackground(Color.DARK_GRAY);
+			atmosphericNoise.setForeground(Color.WHITE);
+			radioactivedecay.setBackground(Color.DARK_GRAY);
+			radioactivedecay.setForeground(Color.WHITE);
 			darkmode.setBackground(Color.DARK_GRAY);
 			darkmode.setForeground(Color.WHITE);
 			lightmode.setBackground(Color.DARK_GRAY);
@@ -224,6 +229,20 @@ public class ActuallyInterface extends Component{
 		}
 	}
 	
+	protected int foundDups(String op1[], String a, String b) {
+		
+	return JOptionPane.showOptionDialog(
+			frame,
+			a, 
+			b,            
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.QUESTION_MESSAGE,
+			null,     
+			op1,  
+			op1[0] 
+			);
+	}
+	
 	protected void atmosphericSelect() {
 		chooseal.setVisible(true);
 		choosea2.setVisible(true);
@@ -238,7 +257,6 @@ public class ActuallyInterface extends Component{
 	}
 	
 	protected void radioactiveSelect() {
-		CheckUpdate.popUp("Currently on beta stage\nIt only generates raw numbers", "Warning");
 		chooseal.setVisible(false);
 		choosea2.setVisible(false);
 		choosea3.setVisible(false);

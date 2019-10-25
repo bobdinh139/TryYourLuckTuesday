@@ -111,7 +111,7 @@ public class ActuallyInterface extends Component{
 		idontunderstand.setBounds(300, 100, 200,30);
 		credit0.setBounds(60, 20, 700, 35);
 		credit1.setBounds(150, 50, 550, 25);
-		credit.setBounds(70, 70, 700, 25);
+		credit.setBounds(100, 70, 700, 25);
 		credit0.setFont(new Font("Serif", Font.BOLD, 20));
 		credit1.setFont(new Font("Serif", Font.ITALIC, 15));
 		credit.setForeground(Color.red);
@@ -211,6 +211,10 @@ public class ActuallyInterface extends Component{
 			choosea2.setForeground(Color.BLACK);
 			choosea3.setBackground(null);
 			choosea3.setForeground(Color.BLACK);
+			atmosphericNoise.setBackground(null);
+			atmosphericNoise.setForeground(Color.BLACK);
+			radioactivedecay.setBackground(null);
+			radioactivedecay.setForeground(Color.BLACK);
 			darkmode.setBackground(null);
 			darkmode.setForeground(Color.BLACK);
 			totalnumber.setBackground(Color.WHITE);
@@ -248,9 +252,7 @@ public class ActuallyInterface extends Component{
 		choosea2.setVisible(true);
 		choosea3.setVisible(true);
 		allalbel[2].setVisible(true);
-		allalbel[3].setVisible(true);
 		max.setVisible(true);
-		base.setVisible(true);
 		allalbel[1].setText("Min");
 		min.setText("1");
 
@@ -267,7 +269,7 @@ public class ActuallyInterface extends Component{
 		for (int i=0; i< stringg.length; stringg[i++].setVisible(false));
 		totalnumber.setVisible(true);
 		min.setVisible(true);
-		min.setText("AAAABBBBCCCC");
+		min.setText("APIKey Should be here");
 		allalbel[1].setText("API key");
 		allalbel[0].setText("Total Number");
 		allalbel[1].setVisible(true);
@@ -304,7 +306,6 @@ public class ActuallyInterface extends Component{
 	protected void choose2() {
 		allalbel[0].setVisible(false);
 		allalbel[3].setVisible(false);
-
 		totalnumber.setVisible(false);
 		base.setVisible(false);
 	}
@@ -322,12 +323,13 @@ public class ActuallyInterface extends Component{
 		for (int i=0; i< stringg.length; stringg[i++].setVisible(true));
 		allalbel[2].setText("Length");
 		min.setVisible(false);
-		base.setVisible(false);
 		allalbel[1].setVisible(false);
-		allalbel[3].setVisible(false);
-		allalbel[0].setText("Total string");
+		allalbel[0].setText("Total String");
 		allalbel[0].setVisible(true);
 		totalnumber.setVisible(true);
+		
+		allalbel[3].setVisible(false);
+		base.setVisible(false);
 	}
 	
 	protected void togglenight() {

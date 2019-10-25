@@ -100,7 +100,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				CheckUpdate.popUp("Wait for the cooldown", "Action can't be done");
 		}
 	}
-	
+
 	private void convertNumber(JSONArray arr) {
 		int number[] = new int[arr.size()];
 		for (int i=0; i < arr.size(); i++) {
@@ -114,7 +114,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				number[i] = (int) Math.round( (double)number[i]/ (double)10);
 			} 
 		}
-		
+
 		if (!checkDuplicates(number)) {
 			printingNumber(number);
 		} else {
@@ -142,7 +142,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			whatIwin.setText("You earn: a sticker!");
 		}
 	}
-	
+
 	private void printingNumber(int arr[]) {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
@@ -173,8 +173,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
-	
-	
+
+
 	private boolean checkDuplicates(int arr[]) {
 		int c =1;
 		for(int i=0; i < arr.length; i++ ){
@@ -217,7 +217,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 	}
 
-	private void printingNumber(String rannum) {
+	private void printingNumber() {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
 		cc++;
@@ -331,7 +331,10 @@ public class Interface extends ActuallyInterface implements ActionListener{
 					}
 					displayOutput(true, data);
 					try {
-						convertNumber(RadioActiveDecay.getRandom(data));
+						if (total > 5)
+							CheckUpdate.popUp(RadioActiveDecay.getRandom(data).toString(), "Done!");
+						else
+							convertNumber(RadioActiveDecay.getRandom(data));
 					} catch (ParseException e) {
 						e.printStackTrace();
 						CheckUpdate.popUp(e.toString(), "Error!");
@@ -345,15 +348,15 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						} else {
 							rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
 							if(!checkDuplicates())
-								printingNumber(rannum);
+								printingNumber();
 							else {
 								String[] options = new String[2];
 								options[1] = new String("Force-Override");
 								options[0] = new String("Close");
 								int result = foundDups(options, "Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
-								
+
 								if(result == JOptionPane.NO_OPTION){
-									printingNumber(rannum);
+									printingNumber();
 								}
 							}
 							System.out.println(rannum);

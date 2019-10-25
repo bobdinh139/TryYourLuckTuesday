@@ -61,6 +61,7 @@ public class ActuallyInterface extends Component{
 	JLabel show ;
 	boolean isdark;
 	
+	// setting up the interface 
 	public ActuallyInterface(boolean isdark) {
 		this.isdark = isdark;
 
@@ -171,6 +172,8 @@ public class ActuallyInterface extends Component{
 
 		frame.setVisible(true);
 	}
+	
+	// implement dark mode for button, textbox, etc
 	private void checkDarkMode() {
 		if (isdark) {
 			credit0.setForeground(Color.WHITE);
@@ -233,6 +236,7 @@ public class ActuallyInterface extends Component{
 		}
 	}
 	
+	// yes or no option panel
 	protected int foundDups(String op1[], String a, String b) {
 		
 	return JOptionPane.showOptionDialog(
@@ -247,6 +251,7 @@ public class ActuallyInterface extends Component{
 			);
 	}
 	
+	// if select atmosphere noise
 	protected void atmosphericSelect() {
 		chooseal.setVisible(true);
 		choosea2.setVisible(true);
@@ -258,6 +263,7 @@ public class ActuallyInterface extends Component{
 
 	}
 	
+	//if select radioactive decay
 	protected void radioactiveSelect() {
 		chooseal.setVisible(false);
 		choosea2.setVisible(false);
@@ -276,6 +282,7 @@ public class ActuallyInterface extends Component{
 		allalbel[0].setVisible(true);
 	}
 	
+	// when choose native depiction
 	protected void toggleNativeDepic() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -287,6 +294,7 @@ public class ActuallyInterface extends Component{
 		frame.dispose();
 	}
 	
+	// when choose java depiction
 	protected void toggleJavaDepic() {
 		try {
 			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -297,6 +305,7 @@ public class ActuallyInterface extends Component{
 		frame.dispose();
 	}
 	
+	// choose generate random number from atmospheric noise
 	protected void choose1() {
 		allalbel[0].setVisible(true);
 		allalbel[3].setVisible(true);
@@ -310,6 +319,7 @@ public class ActuallyInterface extends Component{
 		base.setVisible(false);
 	}
 	
+	// choose generate sequences from atmospheric noise
 	protected void choose1or2() {
 		for (int i=0; i< stringg.length; stringg[i++].setVisible(false));
 		allalbel[1].setVisible(true);
@@ -319,6 +329,7 @@ public class ActuallyInterface extends Component{
 		allalbel[3].setVisible(true);
 		allalbel[0].setText("Total number");	
 	}
+	// choose generate string
 	protected void choosechoose3() {
 		for (int i=0; i< stringg.length; stringg[i++].setVisible(true));
 		allalbel[2].setText("Length");
@@ -332,6 +343,7 @@ public class ActuallyInterface extends Component{
 		base.setVisible(false);
 	}
 	
+	//night mode for main screen
 	protected void togglenight() {
 		UIManager.put("OptionPane.background", Color.DARK_GRAY);
 		UIManager.put("Panel.background", Color.DARK_GRAY);
@@ -339,6 +351,7 @@ public class ActuallyInterface extends Component{
 		new Interface(true);
 		frame.dispose();
 	}
+	//light mode for main screen
 	protected void togglelight() {
 		UIManager.put("OptionPane.background", null);
 		UIManager.put("Panel.background", null);

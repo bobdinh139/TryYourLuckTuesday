@@ -12,6 +12,8 @@ import org.json.simple.parser.ParseException;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private boolean click = false;
+
+	// add listeners 
 	public Interface(boolean isdark) {
 		super(isdark);
 		darkmode.addActionListener(this);
@@ -29,10 +31,12 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		for (int i=0; i< stringg.length; (stringg[i++]).addActionListener(this));
 	}
 
+	// change color for the generate random button
 	private void changecolor() {
 		button.setForeground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 		button.setBackground(new Color(0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1)), 0 + (int)(Math.random() * ((255 - 0) + 1))));
 	}
+	// When anything is clicked 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String s = e.getActionCommand();
@@ -101,6 +105,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 	}
 
+    // convert raw number from 0-255 to 0-20 and check dups, print number out
 	private void convertNumber(JSONArray arr) {
 		int number[] = new int[arr.size()];
 		for (int i=0; i < arr.size(); i++) {
@@ -126,11 +131,42 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				printingNumber(number);
 			}
 		}
-		winWhat(number);
+		winWhat(number[0]);
 
 	}
-	private void winWhat(int arr[]) {
-		int winwhat = arr[0];
+    
+    // checking duplicates for radioactive decay
+	private boolean checkDuplicates(int arr[]) {
+		int c =1;
+		for(int i=0; i < arr.length; i++ ){
+			int a =  arr[i];
+			for(int j=c; j < arr.length; j++ ) {
+				if (a == arr[j]) {
+					return true;
+				}
+			}
+			c++;
+		}
+		return false;
+	}
+
+	// checking duplicates for atmospheric noise
+	private boolean checkDuplicates() {
+		int c =1;
+		for(int i=0; i < gtr.getArrayList().size(); i++ ){
+			String a =  gtr.getArrayList().get(i);
+			for(int j=c; j < gtr.getArrayList().size(); j++ ) {
+				if (a.equals(gtr.getArrayList().get(j))) {
+					return true;
+				}
+			}
+			c++;
+		}
+		return false;
+	}
+
+	// calculate what you win
+	private void winWhat(int winwhat) {
 		double percentage = (winwhat*100/maximum);
 		if (percentage >= 90) {
 			whatIwin.setText("you earn: + 1 extra credit!");
@@ -142,7 +178,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			whatIwin.setText("You earn: a sticker!");
 		}
 	}
-
+	
+	// print out numbers for radioactive decay
 	private void printingNumber(int arr[]) {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
@@ -174,49 +211,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
 
-
-	private boolean checkDuplicates(int arr[]) {
-		int c =1;
-		for(int i=0; i < arr.length; i++ ){
-			int a =  arr[i];
-			for(int j=c; j < arr.length; j++ ) {
-				if (a == arr[j]) {
-					return true;
-				}
-			}
-			c++;
-		}
-		return false;
-	}
-
-	private boolean checkDuplicates() {
-		int c =1;
-		for(int i=0; i < gtr.getArrayList().size(); i++ ){
-			String a =  gtr.getArrayList().get(i);
-			for(int j=c; j < gtr.getArrayList().size(); j++ ) {
-				if (a.equals(gtr.getArrayList().get(j))) {
-					return true;
-				}
-			}
-			c++;
-		}
-		return false;
-	}
-
-	private void winWhat() {
-		int winwhat = Integer.parseInt(gtr.getArrayList().get(0));
-		double percentage = (winwhat*100/maximum);
-		if (percentage >= 90) {
-			whatIwin.setText("you earn: + 1 extra credit!");
-		} else if (percentage < 90 && percentage >= 80) {
-			whatIwin.setText("You earn: 3D-printed model!");
-		}else if (percentage < 80 && percentage >= 40){
-			whatIwin.setText("You earn: goodies bag!");
-		} else if (percentage < 40 && percentage >= 0){
-			whatIwin.setText("You earn: a sticker!");
-		}
-	}
-
+	// print number for atmospheric noise
 	private void printingNumber() {
 		if (cc>0)
 			for (int i=0; i< albel.length; panel.remove(albel[i++]));
@@ -247,12 +242,16 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
+	
+	// reset the generate button to default
 	private void defaultButton() {
 		stopc = false;
 		button.setBackground(null);
 		button.setForeground(null);
 		button.setText("Generate TRUE random number");
 	}
+	
+	// display random data if there are more than 5 numbers or they are sequences or they are strings
 	private void showing() {
 		String display = "";
 		for(int i=0; i < gtr.getArrayList().size(); i++ ){
@@ -264,6 +263,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		CheckUpdate.popUp(display, "Done!");
 		defaultButton();
 	}
+	
+	// cool down before each request
 	private void waitF() {
 		try {
 			for (int i=10; i >0; i--) {
@@ -275,6 +276,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 		click = !click;
 	}
+	
+	//showing library output for quota, etc
 	private void displayOutput(boolean isDecay, String data) {
 		new Thread(new Runnable() {
 			public void run() {
@@ -303,6 +306,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			}
 		}).start();
 	}
+	// Generate random number
 	private void generateRand(int total, int minimum, int maximum, int baseofnum) {
 		stopc = true;
 		button.setText("Retrieving TRUE random number from server");
@@ -360,7 +364,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 								}
 							}
 							System.out.println(rannum);
-							winWhat();
+							winWhat(Integer.parseInt(gtr.getArrayList().get(0)));
 						}
 					}
 					else if (choosea2.isSelected()) {

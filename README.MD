@@ -20,15 +20,28 @@ For this reason, it is impractical to predict random numbers from RANDOM.ORG, ev
 
 **Regarding radioactive decay**
 
-Radioactive decay is a random process.
+There exists the fact that:
+Radioactive decay is a random process. As a result, it is impossible to predict when a particular radioactive nucleus will decay.
 
-It is impossible to predict when a particular radioactive nucleus will decay.
+_But half-life?_
+
+[According to symmetrymagazine.org](https://www.symmetrymagazine.org/breaking/2009/03/30/real-random)
+
+Statistically, a cesium-137 atom has a fifty-fifty chance of decaying in 30.17 years. BUT, there is absolutely, positively no way to predict exactly when any individual atom will decay. 
+
+Odd, right? While the whole batch obeys a statistic, each atom’s decay time is totally unpredictable.
 
 _How it works?_
 
-By measuring 4 atoms. If, for example, atom A decays first, "1" is generated; otherwise, "0" is generated
+[According to symmetrymagazine.org](https://www.symmetrymagazine.org/breaking/2009/03/30/real-random)
 
-Therefore, the number ranging from 0 - 255 (8 bit)
+The Hotbits program is based on the premise that since the decaying of each atom is random, the time between decay events is also random.
+
+Hotbits measures the time between two atoms decaying, then the time between the next two atoms decaying (a total of four events, not three, to avoid a bias the author [explains](http://www.fourmilab.ch/hotbits/how3.html) ). If time one is less than time two, that gets a zero. 
+
+If time two is shorter, that gets a one. The result is a sequence of genuinely random numbers.
+
+=> Therefore, the number ranging from 0 - 255 (8 bit)
 
 _How I convert to the range of 0-20?_
 

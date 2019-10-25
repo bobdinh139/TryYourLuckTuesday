@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
+
+import xyz.null0verflow.librandomorgclient.TooManyRequest;
 public class Interface extends ActuallyInterface implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	private boolean click = false;
@@ -105,7 +107,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 	}
 
-    // convert raw number from 0-255 to 0-20 and check dups, print number out
+	// convert raw number from 0-255 to 0-20 and check dups, print number out
 	private void convertNumber(JSONArray arr) {
 		int number[] = new int[arr.size()];
 		for (int i=0; i < arr.size(); i++) {
@@ -134,8 +136,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		winWhat(number[0]);
 
 	}
-    
-    // checking duplicates for radioactive decay
+
+	// checking duplicates for radioactive decay
 	private boolean checkDuplicates(int arr[]) {
 		int c =1;
 		for(int i=0; i < arr.length; i++ ){
@@ -178,7 +180,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			whatIwin.setText("You earn: a sticker!");
 		}
 	}
-	
+
 	// print out numbers for radioactive decay
 	private void printingNumber(int arr[]) {
 		if (cc>0)
@@ -242,7 +244,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		int f = -50;
 		for (int i=0; i< albel.length; albel[i++].setBounds(f+=150, 400, 100,60));
 	}
-	
+
 	// reset the generate button to default
 	private void defaultButton() {
 		stopc = false;
@@ -250,7 +252,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		button.setForeground(null);
 		button.setText("Generate TRUE random number");
 	}
-	
+
 	// display random data if there are more than 5 numbers or they are sequences or they are strings
 	private void showing() {
 		String display = "";
@@ -263,7 +265,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		CheckUpdate.popUp(display, "Done!");
 		defaultButton();
 	}
-	
+
 	// cool down before each request
 	private void waitF() {
 		try {
@@ -273,10 +275,21 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+			CheckUpdate.popUp(e.toString(), "Error");
 		}
 		click = !click;
 	}
 	
+	// display cool down
+	private void buttonWaitDisplay() {
+		button.setText("Done");
+		stopc = false;
+		button.setBackground(Color.BLACK);
+		button.setForeground(Color.ORANGE);
+		waitF();
+		defaultButton();
+	}
+
 	//showing library output for quota, etc
 	private void displayOutput(boolean isDecay, String data) {
 		new Thread(new Runnable() {
@@ -286,23 +299,25 @@ public class Interface extends ActuallyInterface implements ActionListener{
 					String sCode ="";
 					JSONArray rawnum = null ;
 					if (!isDecay) {
-						quota = gtr.QuotaCheck();
+						try {
+							quota = gtr.QuotaCheck();
+						} catch (TooManyRequest | IOException e) {
+							e.printStackTrace();
+							CheckUpdate.popUp(e.toString(), "Error");
+						}
 						sCode = "status code: " + Integer.toString(gtr.getStatusCode());
 					}else {
-						quota = RadioActiveDecay.parseURl(data, "quotaRequestsRemaining");
-						sCode = "Quota bytes: "+RadioActiveDecay.parseURl(data, "quotaBytesRemaining");
+						quota = rade.parseURl(data, "quotaRequestsRemaining");
+						sCode = "Quota bytes: "+rade.parseURl(data, "quotaBytesRemaining");
 						try {
-							rawnum = RadioActiveDecay.getRandom(data);
+							rawnum = rade.getRandom(data);
 						} catch (ParseException e) {
 							e.printStackTrace();
+							CheckUpdate.popUp(e.toString(), "Error");
 						}
 					}
 					betaalert.setText("<html>" + sCode + "; Quota: "+quota+"<br/>" + gtr.getOutput() + "<br/>"+rawnum+"</html>"); 
 				}
-				if (gtr.getStatusCode()==503) {
-					CheckUpdate.popUp("Too many requests\nWait for 10 mins to a day if this continues", "Error 503");
-				}
-
 			}
 		}).start();
 	}
@@ -318,6 +333,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+						CheckUpdate.popUp(e.toString(), "Error");
 					}
 				}
 			}
@@ -328,17 +344,17 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				if (radioactivedecay.isSelected()) {
 					String data= "";
 					try {
-						data = RadioActiveDecay.getDataFromServer(Integer.toString(total), min.getText());
-					} catch (IOException e) {
+						data = rade.getDataFromServer(Integer.toString(total), min.getText());
+					} catch (Exception e) {
 						e.printStackTrace();
 						CheckUpdate.popUp(e.toString(), "Error!");
 					}
 					displayOutput(true, data);
 					try {
 						if (total > 5)
-							CheckUpdate.popUp(RadioActiveDecay.getRandom(data).toString(), "Done!");
+							CheckUpdate.popUp(rade.getRandom(data).toString(), "Done!");
 						else
-							convertNumber(RadioActiveDecay.getRandom(data));
+							convertNumber(rade.getRandom(data));
 					} catch (ParseException e) {
 						e.printStackTrace();
 						CheckUpdate.popUp(e.toString(), "Error!");
@@ -347,28 +363,43 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				else if (atmosphericNoise.isSelected()) {
 					displayOutput(false, "");
 					if (chooseal.isSelected()) {
-						if (total > 5 || baseofnum !=10) {
-							showing();
-						} else {
+						try {
 							rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
-							if(!checkDuplicates())
-								printingNumber();
-							else {
-								String[] options = new String[2];
-								options[1] = new String("Force-Override");
-								options[0] = new String("Close");
-								int result = foundDups(options, "Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
-
-								if(result == JOptionPane.NO_OPTION){
-									printingNumber();
-								}
+							if (total > 5 || baseofnum !=10) {
+								showing();
+			                    buttonWaitDisplay();
+								return;
 							}
-							System.out.println(rannum);
-							winWhat(Integer.parseInt(gtr.getArrayList().get(0)));
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
 						}
+						if(!checkDuplicates())
+							printingNumber();
+						else {
+							String[] options = new String[2];
+							options[1] = new String("Force-Override");
+							options[0] = new String("Close");
+							int result = foundDups(options, "Duplicates found, please re-generate!\nDue to popular demand, the numbers will not be shown!\n", "Duplicates detected");
+
+							if(result == JOptionPane.NO_OPTION){
+								printingNumber();
+							}
+						}
+						System.out.println(rannum);
+						winWhat(Integer.parseInt(gtr.getArrayList().get(0)));
 					}
 					else if (choosea2.isSelected()) {
-						rannum = gtr.sequenceRandomGenerator(minimum, maximum);
+						try {
+							rannum = gtr.sequenceRandomGenerator(minimum, maximum);
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
+						}
 						showing();
 						defaultButton();
 					}
@@ -378,7 +409,14 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						boolean uppercase = (stringg[1].isSelected());
 						boolean unique = (stringg[0].isSelected());
 						boolean lowercase = (stringg[2].isSelected());
-						rannum = gtr.randomStringGenrator(total, maximum, digit, uppercase, lowercase, unique);
+						try {
+							rannum = gtr.randomStringGenrator(total, maximum, digit, uppercase, lowercase, unique);
+						} catch (TooManyRequest | IOException e) {
+							CheckUpdate.popUp(e.toString(), "Error!");
+							e.printStackTrace();
+							stopc = false;
+							return;
+						}
 						for(int i=0; i < gtr.getArrayList().size(); i++ ){
 							display += gtr.getArrayList().get(i) + "\n";
 						}
@@ -387,12 +425,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 						defaultButton();
 					}
 				}
-				button.setText("Done");
-				stopc = false;
-				button.setBackground(Color.BLACK);
-				button.setForeground(Color.ORANGE);
-				waitF();
-				defaultButton();
+				buttonWaitDisplay();
 			}
 		}).start();
 

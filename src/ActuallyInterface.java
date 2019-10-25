@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
+import java.io.IOException;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -18,6 +19,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 
 import xyz.null0verflow.librandomorgclient.GenerateTrueRandom;
+import xyz.null0verflow.librandomorgclient.TooManyRequest;
 
 public class ActuallyInterface extends Component{
 	protected boolean stopc = true;
@@ -35,7 +37,8 @@ public class ActuallyInterface extends Component{
 	JTextField base;
 	JLabel albel[];
 	JLabel allalbel[] = new JLabel[4];
-	GenerateTrueRandom gtr = new GenerateTrueRandom("bobdinh139@icloud.com");
+	GenerateTrueRandom gtr;
+	RadioActiveDecay rade = new RadioActiveDecay();
 	JLabel credit0 = new JLabel("TRUE random generator by measuring amospheric noise and radioactive decay");
 	JLabel credit1 = new JLabel("by @frychicken (Bob Dinh) with special thanks to random.org and fourmilab.ch API ");
 	JLabel credit = new JLabel("Powered by librandom.org-client, libfourmilab-client (written also by @frychicken) and json-simple-1.1");
@@ -51,7 +54,7 @@ public class ActuallyInterface extends Component{
 
 	JRadioButton atmosphericNoise = new JRadioButton("Atmospheric Noise");
 	JRadioButton radioactivedecay = new JRadioButton("Radioactive Decay");
-	
+
 	JRadioButton chooseal = new JRadioButton("Random integer");
 	JRadioButton choosea2 = new JRadioButton("Random sequence");
 	JRadioButton choosea3 = new JRadioButton("Random string");
@@ -60,11 +63,16 @@ public class ActuallyInterface extends Component{
 	ButtonGroup bg;
 	JLabel show ;
 	boolean isdark;
-	
+
 	// setting up the interface 
 	public ActuallyInterface(boolean isdark) {
 		this.isdark = isdark;
-
+		try {
+			gtr =  new GenerateTrueRandom("bobdinh139@icloud.com");
+		} catch (NumberFormatException | TooManyRequest | IOException e1) {
+			CheckUpdate.popUp(e1.toString(), "Error");
+			e1.printStackTrace();
+		}
 		frame = new JFrame("Try your luck tuesday");
 		try {
 			frame.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("Hi.png")));
@@ -130,13 +138,13 @@ public class ActuallyInterface extends Component{
 		bg.add(chooseal);
 		bg.add(choosea2);
 		bg.add(choosea3);
-		
+
 		atmosphericNoise.setBounds(10, 130, 200, 25);
 		radioactivedecay.setBounds(10, 150, 150, 25);
 		bg2.add(atmosphericNoise);
 		bg2.add(radioactivedecay);
 		atmosphericNoise.setSelected(true);
-		
+
 		button.setBounds(200, 600, 400, 100);
 		chooseal.setSelected(true);
 		frame.setResizable(false);
@@ -172,7 +180,7 @@ public class ActuallyInterface extends Component{
 
 		frame.setVisible(true);
 	}
-	
+
 	// implement dark mode for button, textbox, etc
 	private void checkDarkMode() {
 		if (isdark) {
@@ -235,22 +243,22 @@ public class ActuallyInterface extends Component{
 			for ( int i=0; i < allalbel.length; allalbel[i++].setForeground(Color.BLACK));
 		}
 	}
-	
+
 	// yes or no option panel
 	protected int foundDups(String op1[], String a, String b) {
-		
-	return JOptionPane.showOptionDialog(
-			frame,
-			a, 
-			b,            
-			JOptionPane.YES_NO_OPTION,
-			JOptionPane.QUESTION_MESSAGE,
-			null,     
-			op1,  
-			op1[0] 
-			);
+
+		return JOptionPane.showOptionDialog(
+				frame,
+				a, 
+				b,            
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,     
+				op1,  
+				op1[0] 
+				);
 	}
-	
+
 	// if select atmosphere noise
 	protected void atmosphericSelect() {
 		chooseal.setVisible(true);
@@ -262,7 +270,7 @@ public class ActuallyInterface extends Component{
 		min.setText("1");
 
 	}
-	
+
 	//if select radioactive decay
 	protected void radioactiveSelect() {
 		chooseal.setVisible(false);
@@ -281,7 +289,7 @@ public class ActuallyInterface extends Component{
 		allalbel[1].setVisible(true);
 		allalbel[0].setVisible(true);
 	}
-	
+
 	// when choose native depiction
 	protected void toggleNativeDepic() {
 		try {
@@ -293,7 +301,7 @@ public class ActuallyInterface extends Component{
 		new Interface(isdark);
 		frame.dispose();
 	}
-	
+
 	// when choose java depiction
 	protected void toggleJavaDepic() {
 		try {
@@ -304,7 +312,7 @@ public class ActuallyInterface extends Component{
 		new Interface(isdark);
 		frame.dispose();
 	}
-	
+
 	// choose generate random number from atmospheric noise
 	protected void choose1() {
 		allalbel[0].setVisible(true);
@@ -318,7 +326,7 @@ public class ActuallyInterface extends Component{
 		totalnumber.setVisible(false);
 		base.setVisible(false);
 	}
-	
+
 	// choose generate sequences from atmospheric noise
 	protected void choose1or2() {
 		for (int i=0; i< stringg.length; stringg[i++].setVisible(false));
@@ -338,11 +346,11 @@ public class ActuallyInterface extends Component{
 		allalbel[0].setText("Total String");
 		allalbel[0].setVisible(true);
 		totalnumber.setVisible(true);
-		
+
 		allalbel[3].setVisible(false);
 		base.setVisible(false);
 	}
-	
+
 	//night mode for main screen
 	protected void togglenight() {
 		UIManager.put("OptionPane.background", Color.DARK_GRAY);
@@ -359,6 +367,6 @@ public class ActuallyInterface extends Component{
 		new Interface(false);
 		frame.dispose();
 	}
-	
+
 
 }

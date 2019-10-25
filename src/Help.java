@@ -44,7 +44,7 @@ public class Help extends JPanel {
 
 				browser = new WebView();
 				webEngine = browser.getEngine();
-				webEngine.load("https://www.random.org/randomness/");
+				webEngine.load("https://github.com/bobdinh139/TryYourLuckTuesday/blob/master/README.MD#i-have-doubts");
 
 				ObservableList<Node> children = root.getChildren();
 				Worker<Void> worker = webEngine.getLoadWorker();

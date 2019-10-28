@@ -45,8 +45,11 @@ If time two is shorter, that gets a one. The result is a sequence of genuinely r
 
 _How I convert to the range of 0-20?_
 
-if the number is bigger than 20 and smaller than (or equal to) 200, divide the integer by 10, then round it.
+if the number is bigger than 20 and smaller than (or equal to) 200, divide the integer by 10, then round it. After that, subtract the number by 2, take the absolute value of it. If the number is smaller than 0, generate pseudo random from 0-20.
 
-if the number bigger than 200, remove the first number and divide the number by 10, then round it.
+if the number from 201 to 220, remove the first number; if the number from 221 to 240, remove the first number and subtract the remaining by 2.
+
+if the number from 240 t0 255, generate a pseudo random number from 0 to 20. 
+
 
  

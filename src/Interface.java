@@ -3,6 +3,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -109,16 +110,27 @@ public class Interface extends ActuallyInterface implements ActionListener{
 
 	// convert raw number from 0-255 to 0-20 and check dups, print number out
 	private void convertNumber(JSONArray arr) {
+		Random r = new Random();
 		int number[] = new int[arr.size()];
 		for (int i=0; i < arr.size(); i++) {
 			number[i] = Integer.valueOf(String.valueOf(arr.get(i)));
 		}
 		for (int i=0; i < number.length;i++) {
 			if (number[i] > 20 && number[i] <= 200) {
-				number[i] = (int) Math.round( (double)number[i]/ (double)10);
+				number[i] = (int) Math.round((double)number[i]/ (double)10);
+				number[i] = Math.abs(number[i]-2);
+				if (number[i] <0) {
+					number[i] = r.nextInt((20 - 0) + 1) + 0;
+				}
 			} else if(number[i] > 200) {
-				number[i] = number[i] % (int) Math.pow(10, (int) Math.log10(number[i]));
-				number[i] = (int) Math.round( (double)number[i]/ (double)10);
+				if (number[i] > 200 && number[i] < 221)
+					number[i] = number[i] % (int) Math.pow(10, (int) Math.log10(number[i]));
+				if (number[i] > 220 && number[i] < 241)
+					number[i] = (number[i] % (int) Math.pow(10, (int) Math.log10(number[i])))-20;
+				if (number[i] > 240 && number[i] <= 253) {
+
+					number[i] = r.nextInt((20 - 0) + 1) + 0;
+				}
 			} 
 		}
 
@@ -197,7 +209,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				for (int i=0; i< albel.length; i++) {
 					albel[i].setForeground(Color.GREEN);
 					panel.add(albel[i]);
-					for (int j =0; j<= Integer.valueOf(arr[i]); j++) {
+					for (int j =-1; j<= Integer.valueOf(arr[i]); j++) {
 						try {
 							Thread.sleep(30);
 							albel[i].setText(Integer.toString(j));
@@ -216,7 +228,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 	// print number for atmospheric noise
 	private void printingNumber() {
 		if (cc>0)
-			for (int i=0; i< albel.length; panel.remove(albel[i++]));
+			for (int i=-1; i< albel.length; panel.remove(albel[i++]));
 		cc++;
 		albel = new JLabel[gtr.getArrayList().size()];
 		for (int i=0; i< albel.length; albel[i++] = new JLabel());
@@ -279,7 +291,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 		}
 		click = !click;
 	}
-	
+
 	// display cool down
 	private void buttonWaitDisplay() {
 		button.setText("Done");
@@ -367,7 +379,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 							rannum = gtr.getRandomNumber(total, minimum, maximum, baseofnum);
 							if (total > 5 || baseofnum !=10) {
 								showing();
-			                    buttonWaitDisplay();
+								buttonWaitDisplay();
 								return;
 							}
 						} catch (TooManyRequest | IOException e) {

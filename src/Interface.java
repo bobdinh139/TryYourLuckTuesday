@@ -110,7 +110,6 @@ public class Interface extends ActuallyInterface implements ActionListener{
 
 	// convert raw number from 0-255 to 0-20 and check dups, print number out
 	private void convertNumber(JSONArray arr) {
-		Random r = new Random();
 		int number[] = new int[arr.size()];
 		for (int i=0; i < arr.size(); i++) {
 			number[i] = Integer.valueOf(String.valueOf(arr.get(i)));
@@ -129,6 +128,7 @@ public class Interface extends ActuallyInterface implements ActionListener{
 				if (number[i] > 220 && number[i] < 241)
 					number[i] = (number[i] % (int) Math.pow(10, (int) Math.log10(number[i])))-20;
 				if (number[i] > 240 && number[i] <= 253) {
+					Random r = new Random(number[i]);
 					number[i] = r.nextInt((20 - 0) + 1) + 0;
 				}
 				

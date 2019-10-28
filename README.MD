@@ -4,6 +4,12 @@ It is further developed at [@frychicken](https://github.com/frychicken/TrueRando
 
 Probably will not receive updates because it meets all the requirements for the lucky tuesday event.
 
+## Another loop?
+
+I **will not** spam server with requests. Make another loop to check for duplicates to change the set of numbers is worthless.
+
+I wrote the whole UI from scratch, there is no reason for me to not just write a simple loop if I think it is necessary, but it is not and it is pointless.  
+
 ## I have doubts 
 
 RANDOM.ORG has something to say:

@@ -55,7 +55,7 @@ if the number is bigger than 20 and smaller than (or equal to) 200, divide the i
 
 if the number from 201 to 220, remove the first number; if the number from 221 to 240, remove the first number and subtract the remaining by 2.
 
-if the number from 240 t0 255, generate a pseudo random number from 0 to 20. 
+if the number from 240 t0 255, generate a pseudo random number from 0 to 20 with the seed of that number. 
 
 
  

@@ -115,24 +115,8 @@ public class Interface extends ActuallyInterface implements ActionListener{
 			number[i] = Integer.valueOf(String.valueOf(arr.get(i)));
 		}
 		for (int i=0; i < number.length;i++) {
-			if (number[i] > 20 && number[i] <= 200) {
-				number[i] = (int) Math.round((double)number[i]/ (double)10);
-				number[i] = Math.abs(number[i]-2);
-				if (number[i] <0) {
-					number[i] = 0;
-				}
-			} else if(number[i] > 200) {
-				
-				if (number[i] > 200 && number[i] < 221)
-					number[i] = number[i] % (int) Math.pow(10, (int) Math.log10(number[i]));
-				if (number[i] > 220 && number[i] < 241)
-					number[i] = (number[i] % (int) Math.pow(10, (int) Math.log10(number[i])))-20;
-				if (number[i] > 240 && number[i] <= 253) {
 					Random r = new Random(number[i]);
 					number[i] = r.nextInt((20 - 0) + 1) + 0;
-				}
-				
-			} 
 		}
 
 		if (!checkDuplicates(number)) {

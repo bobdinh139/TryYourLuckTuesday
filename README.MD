@@ -51,11 +51,19 @@ If time two is shorter, that gets a one. The result is a sequence of genuinely r
 
 _How I convert to the range of 0-20?_
 
+**This method is deprecated**
+
 if the number is bigger than 20 and smaller than (or equal to) 200, divide the integer by 10, then round it. After that, subtract the number by 2, take the absolute value of it. If the number is smaller than 0, number is 0
 
 if the number from 201 to 220, remove the first number; if the number from 221 to 240, remove the first number and subtract the remaining by 2.
 
 if the number from 240 t0 255, generate a pseudo random number from 0 to 20 with the seed of that number. 
+
+**New method**
+
+Use pseudo random number with radioactive as seed.
+
+[Check out the chart](https://docs.google.com/spreadsheets/d/11usG9jF-tGYgwij4w4gTLmZh_e0ht_K78Oe94NylSgo/edit?usp=sharing)
 
 
  
